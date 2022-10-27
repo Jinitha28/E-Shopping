@@ -1,0 +1,48 @@
+<!-- product section -->
+<div class="container py-2">
+  <div class="row row-cols-lg-4 g-3">
+    {% for product in products %}
+    <div class="col">
+      <div class="card">
+        <a href="{% url 'core:product_detail' product.id %}"
+          ><img
+            src="{{product.image.url}}"
+            class="card-img-top"
+            height="200px"
+            alt=""
+        /></a>
+
+        <div class="card-body">
+          <h3>{{product.name}}</h3>
+          <p class="product-price">
+            <span>Per {{product.unit}}</span>
+            <i class="fa-solid fa-inr"></i>
+            {{product.price}}
+          </p>
+          <div>
+            <a href="{% url 'core:cart_add' product.id %}" class="btn btn-cart border-0 rounded-5 py-3 px-4">
+              <i class="fa-solid fa-heart"></i>
+              Add to cart
+            </a>
+            <a href="{% url 'core:add_to_wishlist' product.id %}" class="btn btn-cart border-0 rounded-5 py-3 px-4">
+              <i class="fa-solid fa-heart"></i>
+              Wishlist
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% empty %}
+
+    <div class="col text-center">
+      <div class="card rounded-2 border-0">
+        <div class="card-body">
+          <h3>Nothing found!!</h3>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <!-- end product section -->
+  </div>
+</div>

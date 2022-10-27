@@ -1,0 +1,67 @@
+{% load static %}
+
+<!-- Footer -->
+<footer class="bg-dark text-center text-white">
+  <div class="footer-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6">
+          <div class="footer-box about-widget">
+            <h2 class="widget-title">About us</h2>
+            <p>
+                
+              The main allure of Ecart shopping is that consumers can find and
+              purchase items they need (which are then shipped to their front
+              door) without ever leaving the house. Ecart was
+              introduced to bring convenience to the lives of people.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="footer-box get-in-touch">
+            <h2 class="widget-title">Get in Touch</h2>
+            <ul>
+              <li>34/8, East Hukupara, Gifirtok, Sadan.</li>
+              <li>www.ecart.com</li>
+              <li>+00 111 222 3333</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="footer-box pages">
+            <h2 class="widget-title">Pages</h2>
+            <ul>
+              <li><a href="{% url 'core:home' %}">Home</a></li>
+              <li><a href="{% url 'core:about' %}">About</a></li>
+              <li><a href="{% url 'core:contact' %}">Contact us</a></li>
+              <li><a href="{% url 'core:shop' %}">Shop</a></li>
+              <li><a href="{% url 'core:category_list' %}">Categories</a></li>
+              <li><a href="{% url 'core:category_list' %}">Cart</a></li>
+              <!--<li><a href="services.html">Shop</a></li>
+              <li><a href="news.html">News</a></li>
+              <li><a href="contact.html">Contact</a></li>-->
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="footer-box subscribe">
+            <h2 class="widget-title">Subscribe</h2>
+            <p> Sent your latest updates.</p>
+            <form action="index.html">
+              <input type="email" placeholder="Email" />
+              <button type="submit">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2020 Copyright:
+    <a class="text-white" href="https://mdbootstrap.com/">ecart.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
