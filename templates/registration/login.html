@@ -27,7 +27,7 @@
             <form action="{% url 'core:login' %}" method="post" id="loginForm">
               {% csrf_token %} {{form.as_p}}
               <div class="d-flex justify-content-between">
-                <a href="#" class="link-primary"
+                <a href="{% url 'core:signup' %}" class="link-primary"
                   >Forgot password?</a
                 >
                 <a href="{% url 'core:signup' %}" class="link-primary"

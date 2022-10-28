@@ -1,47 +1,23 @@
-.hr{
-	height:2px;
-	margin:60px 0 50px 0;
-	background:rgba(235, 215, 215, 0.2);
-}
-
-.messages {
-    position: fixed;
-    top: 80px;
-    right: 24px;
-    width: max-content;
-    z-index: 10;
-    height: calc(max-content + 16px);
-    overflow: hidden;
-    overflow-y: scroll;
-  }
-
-
-  /*marque*/
-  .bounce {
-    height: 50px;
-    overflow: hidden;
-    position: relative;
-    background: #fefefe;
-    color: #333;
-    border: 1px solid #4a4a4a;
+.hr {
+  height: 2px;
+  margin: 60px 0 50px 0;
+  background: rgba(235, 215, 215, 0.2);
 }
 
 .bounce p {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    line-height: 50px;
-    text-align: center;
-    -moz-transform: translateX(50%);
-    -webkit-transform: translateX(50%);
-    transform: translateX(50%);
-    -moz-animation: bouncing-text 5s linear infinite alternate;
-    -webkit-animation: bouncing-text 5s linear infinite alternate;
-    animation: bouncing-text 10s linear infinite alternate;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  line-height: 50px;
+  text-align: center;
+  -moz-transform: translateX(50%);
+  -webkit-transform: translateX(50%);
+  transform: translateX(50%);
+  -moz-animation: bouncing-text 5s linear infinite alternate;
+  -webkit-animation: bouncing-text 5s linear infinite alternate;
+  animation: bouncing-text 10s linear infinite alternate;
 }
-
-
 
 body {
   font-family: "Poppins", sans-serif;
@@ -170,9 +146,6 @@ body {
   right: 24px;
   width: max-content;
   z-index: 10;
-  height: calc(max-content + 16px);
-  overflow: hidden;
-  overflow-y: scroll;
 }
 
 datalist {
@@ -222,7 +195,9 @@ datalist {
   justify-content: center;
   align-items: center;
   margin-top: calc(var(--hl-shadow-distance) + var(--hl-shadow-height) + 8px);
-  margin-bottom: calc(var(--hl-shadow-distance) + var(--hl-shadow-height) + 8px);
+  margin-bottom: calc(
+    var(--hl-shadow-distance) + var(--hl-shadow-height) + 8px
+  );
 
   height: var(--hl-height);
   width: var(--hl-width);
@@ -245,4 +220,6 @@ datalist {
   top: var(--hl-shadow-distance);
 }
 
-
+.text-center {
+  text-decoration-color: #5432d3;
+}

@@ -316,20 +316,28 @@ class CartView(views.TemplateView):
 
 
 # add item to cart
-class AddToCartView(views.TemplateView):
+class AddToCartView(auth_mixins.LoginRequiredMixin,views.TemplateView):
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        product = core_models.ProductModel.objects.get(id=pk)
-        cart = core_models.Cart.get_cart(request)
-        cart_item, created = core_models.CartItem.objects.get_or_create(
-            cart=cart,
-            product=product,
-        )
-        if created:
-            cart_item.quantity = 1
-        else:
-            cart_item.quantity += 1
-        cart_item.save
+        try:
+            pk = kwargs.get("pk")
+            product = core_models.ProductModel.objects.get(id=pk)
+
+            cart = core_models.Cart.get_cart(request)
+
+            cart_item, created = core_models.CartItem.objects.get_or_create(
+                cart=cart,
+                product=product,
+            )
+
+            if created:
+                cart_item.quantity = 1
+            else:
+                cart_item.quantity += 1
+            cart_item.save()
+            messages.success(request, "Added!")
+
+        except:
+            messages.error(request, "Something went wrong!")
 
         url = request.META.get("HTTP_REFERER")
         return redirect(url)
@@ -379,7 +387,7 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
         billing_address = billing_form.save()
         shipping_address = shipping_form.save()
         delivery_charge = self.get_delivery_charge(shipping_address)
-        amount = self.apply_other_charges(cart.total() + delivery_charge) * 100 or 10000
+        amount = self.apply_other_charges(cart.total() + delivery_charge) * 100 
 
         # create order
         data = {
@@ -489,7 +497,7 @@ class WishlistDetailView(views.DetailView):
 
 
 # add to wishlist view
-class AddToWishlist(views.View):
+class AddToWishlist(auth_mixins.LoginRequiredMixin,views.View):
     template_name = "shop/wishlist_add.html"
     wishlist_model = core_models.WishlistModel
     product_model = core_models.ProductModel

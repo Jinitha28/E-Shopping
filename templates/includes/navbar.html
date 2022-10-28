@@ -26,28 +26,28 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:about' %}">About</a>
+            <a class="nav-link" href="{% url 'core:about' %}">About</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:contact' %}"
+            <a class="nav-link" href="{% url 'core:contact' %}"
               >Contact Us</a
             >
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:shop' %}">Shop</a>
+            <a class="nav-link" href="{% url 'core:shop' %}">Shop</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:category_list' %}"
+            <a class="nav-link" href="{% url 'core:category_list' %}"
               >Categories</a
             >
           </li>
 
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:cart' %}">Cart</a>
+            <a class="nav-link" href="{% url 'core:cart' %}">Cart</a>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -154,13 +154,13 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:signup' %}"
+            <a class="nav-link" href="{% url 'core:signup' %}"
               >Sign Up</a
             >
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'core:login' %}">Login</a>
+            <a class="nav-link" href="{% url 'core:login' %}">Login</a>
           </li>
 
           {% endif %}
