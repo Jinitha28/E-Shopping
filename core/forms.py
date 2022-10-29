@@ -38,15 +38,17 @@ class ProfileForm(forms.ModelForm):
             "account_type",
         )
 
-
+#currency form
 class CurrencyForm(forms.Form):
     pass
 
+#feedback form
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = core_models.Feedback
         exclude = ("is_replied", "status", "user")
 
+#cartitem form
 class CartItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CartItemForm, self).__init__(*args, **kwargs)
@@ -75,13 +77,14 @@ AddressFormSet = forms.modelformset_factory(
 )
 
 
-
+#Billing form
 class BillingAddressForm(AddressForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = "Billing Address"
         self.prefix = "billing"
 
+#shipping form
 class ShippingAddressForm(AddressForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -95,7 +98,7 @@ class WishlistForm(forms.ModelForm):
         model = core_models.WishlistModel
         fields = ["name", "description"]
 
-
+#Add to cart form
 class AddToWishlistForm(forms.ModelForm):
     class Meta:
         model = core_models.WishlistModel
@@ -106,6 +109,7 @@ AddToWishlistFormSet = forms.modelformset_factory(
     core_models.WishlistModel, form=AddToWishlistForm, edit_only=True, extra=0, can_delete=True
 )
 
+# registration form
 class UserRegistrationForm(auth_forms.UserCreationForm):
     class Meta:
         model = USER

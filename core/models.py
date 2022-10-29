@@ -24,8 +24,6 @@ class TimeStamp(models.Model):
     class Meta:
         abstract = True
 
-
-
 #unit model
 class UnitModel(core_models.TimeStamp, models.Model):
     name = models.CharField(max_length=16)
@@ -145,10 +143,7 @@ class Profile(TimeStamp, models.Model):
         user = request.user
         obj = Profile.objects.filter(user=user, status=True, **kwargs).first()
         return obj
-
-
-
-
+    
 
 #category model
 class CategoryModel(core_models.TimeStamp, models.Model):
@@ -275,8 +270,7 @@ class ReviewModel(TimeStamp, models.Model):
         return reverse("product:review_detail", kwargs={"pk": self.pk})
 
 
-
-#order
+#order model
 class Order(TimeStamp, models.Model):
     class CurrencyChoices:
         INR = "INR"

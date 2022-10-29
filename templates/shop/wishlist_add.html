@@ -29,18 +29,30 @@
           <div class="col-auto">
             <div class="card rounded-pill">
               <div class="card-body">
-                <div class="form-check d-flex align-items-center justify-content-start">
+                <div
+                  class="form-check d-flex align-items-center justify-content-start"
+                >
                   <input
                     class="form-check-input me-2"
                     type="checkbox"
                     name="wishlists"
                     value="{{wishlist.id}}"
                     id="id_wishlist_{{wishlist.id}}"
-                    {% if product in wishlist.products.all %}
+                    {%
+                    if
+                    product
+                    in
+                    wishlist.products.all
+                    %}
                     checked="true"
-                    {% endif %}
+                    {%
+                    endif
+                    %}
                   />
-                  <label class="form-check-label text-nowrap" for="id_wishlist_{{wishlist.id}}">
+                  <label
+                    class="form-check-label text-nowrap"
+                    for="id_wishlist_{{wishlist.id}}"
+                  >
                     <a href="{% url 'core:wishlist_detail' wishlist.id %}"
                       >{{wishlist.name}}</a
                     >
@@ -55,21 +67,17 @@
           {% endfor %}
         </div>
         <div class="mb-3">
-
           <a
-          href="{% url 'core:wishlist_create' %}"
-          class="btn btn-dark rounded-5 px-4 py-3"
-          >Create now</a
+            href="{% url 'core:wishlist_create' %}"
+            class="btn btn-dark rounded-5 px-4 py-3"
+            >Create now</a
           >
         </div>
-        <hr>
-        <button  class="btn btn-primary rounded-5 px-4 py-3 me-2">Update</button>
-        <a
-          href="{% url 'core:shop' %}"
-          class="btn btn-dark rounded-5 px-4 py-3"
+        <hr />
+        <button class="btn btn-primary rounded-5 px-4 py-3 me-2">Update</button>
+        <a href="{% url 'core:shop' %}" class="btn btn-dark rounded-5 px-4 py-3"
           >Shop</a
         >
-
       </form>
     </div>
   </div>

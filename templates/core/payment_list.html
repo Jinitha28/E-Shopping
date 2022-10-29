@@ -27,7 +27,7 @@
           <tr>
             <th scope="row">{{forloop.counter}}</th>
             <td scope="row" class="text-start">
-              <a href="" >{{payment.id}}</a>
+              <a href="">{{payment.id}}</a>
             </td>
             <td scope="row">{{payment.status}}</td>
             <td scope="row">
@@ -52,7 +52,11 @@
 
   <div class="row">
     <div class="col">
-      <a href="{% url 'core:shop' %}" class="btn btn-dark rounded-pill px-4 py-2">Shop</a>
+      <a
+        href="{% url 'core:shop' %}"
+        class="btn btn-dark rounded-pill px-4 py-2"
+        >Shop</a
+      >
     </div>
   </div>
 </div>

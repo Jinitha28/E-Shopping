@@ -28,7 +28,7 @@ urlpatterns = [
     path("product/<int:pk>/detail", views.ProductDetailView.as_view(), name="product_detail"),
     path("product/category", views.CategoryListView.as_view(), name="category_list"),
     path("product/category/<int:pk>/product/", views.ProductListByCategory.as_view(), name="product_by_category"),
-
+    path("product/<int:pk>/review/", views.ProductReviewAddView.as_view(), name="add_product_review"),
 
     # Wishlist
     path("wishlist/", views.WishlistListView.as_view(), name="wishlist_list"),
@@ -37,29 +37,23 @@ urlpatterns = [
     path("wishlist/add/product/<int:product_pk>/", views.AddToWishlist.as_view(), name="add_to_wishlist"),
     path("wishlist/remove/product/<int:product_pk>/", views.AddToWishlist.as_view(), name="remove_from_wishlist"),
 
-    # Product Review
-    path("product/<int:pk>/review/", views.ProductReviewAddView.as_view(), name="add_product_review"),
-    
     #registration
     path("user/signup/", views.RegistrationView.as_view(), name="signup"),
     path("user/login/", views.LoginView.as_view(), name="login"),
     path("user/logout/", views.LogoutView.as_view(), name="logout"),
     
-
     # Password Reset
     path("user/password_reset/", views.PasswordResetView.as_view(), name="password_reset"),
     path("user/password_reset/done/", views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path("user/reset/<uidb64>/<token>/", views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("user/reset/done/", views.PasswordResetConfirmView.as_view(), name="password_reset_complete"),
 
-   
     #order
     path("order/", views.OrderView.as_view(), name="order"),
     path("order/history/", views.OrderHistoryView.as_view(), name="order_history"),
     path("order/<str:pk>/", views.OrderDetailView.as_view(), name="order_detail"),
 
-
-    # Payment
+  # Payment
     path("payment/", views.PaymentListView.as_view(), name="payment_list"),
 
 

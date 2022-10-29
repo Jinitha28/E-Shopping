@@ -98,6 +98,7 @@ class ShopView(views.ListView):
     context_object_name = "products"
 
 
+#Profile view
 class ProfileView(auth_mixins.LoginRequiredMixin, views.View):
     template_name = "user/profile.html"
     profile_model = core_models.Profile
@@ -176,7 +177,7 @@ class DashboardView(auth_mixins.LoginRequiredMixin, views.View):
         return context
 
 
-# registration
+# registration view
 class RegistrationView(views.CreateView):
     template_name = "registration/signup.html"
     model = USER
@@ -184,6 +185,7 @@ class RegistrationView(views.CreateView):
     success_url = reverse_lazy("core:login")
 
 
+#login view
 class LoginView(auth_views.LoginView):
     template_name = "registration/login.html"
     redirect_authenticated_user = True
@@ -206,7 +208,7 @@ class LoginView(auth_views.LoginView):
             return super().form_valid(form)
         return super().form_invalid(form)
 
-
+#logout view
 class LogoutView(auth_views.LogoutView):
     template_name = "registration/logged_out.html"
 
@@ -219,11 +221,11 @@ class PasswordResetView(auth_views.PasswordResetView):
     success_url = reverse_lazy("core:password_reset_done")
     template_name = "registration/password_reset_form.html"
 
-
+# password reset done view
 class PasswordResetDoneView(auth_views.PasswordResetDoneView):
     template_name = "registration/password_reset_done.html"
 
-
+# password reset confirm view
 class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     success_url = reverse_lazy("core:password_reset_complete")
     template_name = "registration/password_reset_confirm.html"
@@ -417,6 +419,7 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
         return render(self.request, self.template_name, context)
 
 
+#order view
 class OrderView(auth_mixins.LoginRequiredMixin, views.ListView):
     template_name = "shop/order.html"
     model = core_models.Order
@@ -559,7 +562,7 @@ class RemoveFromWishlistView(views.UpdateView):
         return redirect(url)
 
 
-# Product add Review view
+# Product Review add view
 class ProductReviewAddView(auth_mixins.LoginRequiredMixin, views.View):
     template_name = "shop/product_review_add.html"
     form_class = core_forms.ProductReviewForm
