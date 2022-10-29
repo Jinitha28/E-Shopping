@@ -28,35 +28,29 @@
 
     <!-- product section -->
     <div class="col-lg-4 col-md-6 text-center">
-      <div class="single-product-item">
-        <div class="product-image">
-          <a href="{% url 'core:product_detail' product.id %}"
-            ><img src="{{product.image.url}}" alt=""
-          /></a>
+      <div class="card">
+        <a href="{% url 'core:product_detail' product.id %}">
+          <img class="card-img-top" src="{{product.image.url}}" alt="" />
+        </a>
+        <div class="card-body">
+          <h3>{{product.name}}</h3>
+          <p class="product-price">
+            <span>Per {{product.unit}}</span>
+            <i class="fa-solid fa-inr"></i>
+            {{product.price}}
+          </p>
+          
+          <div>
+            <a href="{% url 'core:cart_add' product.id%}" class="btn btn-cart border-0 rounded-5 py-3 px-4">
+              <i class="fa-solid fa-cart"></i>
+              Add to cart
+            </a>
+            <a href="{% url 'core:add_to_wishlist' product.id %}" class="btn btn-cart border-0 rounded-5 py-3 px-4">
+              <i class="fa-solid fa-remove"></i>
+              Remove
+            </a>
+          </div>
         </div>
-        <h3>{{product.name}}</h3>
-        <p class="product-price">
-          <span>Per {{product.unit}}</span>
-          <i class="fa-solid fa-inr"></i>
-          {{product.price}}
-        </p>
-        <form action="{% url 'core:cart_add' product.id %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="wishlist_id" value="{{wishlist.id}}" />
-          <button
-            formaction="{% url 'core:remove_from_wishlist' product.id %}"
-            class="btn btn-cart border-0 rounded-5 py-3 px-4"
-          >
-            <i class="fa-solid fa-trash"></i>
-            Remove
-          </button>
-          <button
-            type="submit"
-            class="btn btn-cart border-0 rounded-5 py-3 px-4"
-          >
-            <i class="fa-solid fa-shopping-cart"></i> Add to Cart
-          </button>
-        </form>
       </div>
     </div>
 

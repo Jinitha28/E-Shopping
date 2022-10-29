@@ -16,9 +16,6 @@ USER = settings.AUTH_USER_MODEL
 
 USER = auth.get_user_model()
 
-
-
-
 class TimeStamp(models.Model):
     status = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -251,9 +248,6 @@ class CartItem(core_models.TimeStamp, models.Model):
 
     def __next__(self):
         yield (self.product, self.quantity)
-
-
-
 
 
 #wishlist model

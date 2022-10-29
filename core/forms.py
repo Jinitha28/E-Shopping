@@ -7,17 +7,12 @@ from django.contrib import auth
 
 USER = auth.get_user_model()
 
-
-
-
 from core.models import (
     Address,
     Cart,
     CartItem,
     
 )
-
-
 class AddressForm(forms.ModelForm):
     class Meta:
         model = core_models.Address
@@ -44,28 +39,13 @@ class ProfileForm(forms.ModelForm):
         )
 
 
-
-
-
-
-
-
-
-
-
-
 class CurrencyForm(forms.Form):
     pass
-
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = core_models.Feedback
         exclude = ("is_replied", "status", "user")
-
-
-
-
 
 class CartItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -96,13 +76,11 @@ AddressFormSet = forms.modelformset_factory(
 
 
 
-
 class BillingAddressForm(AddressForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = "Billing Address"
         self.prefix = "billing"
-
 
 class ShippingAddressForm(AddressForm):
     def __init__(self, *args, **kwargs):
@@ -128,13 +106,10 @@ AddToWishlistFormSet = forms.modelformset_factory(
     core_models.WishlistModel, form=AddToWishlistForm, edit_only=True, extra=0, can_delete=True
 )
 
-
-
 class UserRegistrationForm(auth_forms.UserCreationForm):
     class Meta:
         model = USER
         fields = ["username", "email"]
-
 
 
 # Product Review form
