@@ -259,7 +259,8 @@ class WishlistModel(TimeStamp, models.Model):
 
     def __str__(self) -> str:
         return self.name
-
+    def get_absolute_url(self):
+        return reverse("core:wishlist_list")
 
 class ReviewModel(TimeStamp, models.Model):
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)

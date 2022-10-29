@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
 <!-- products -->
+<section class="vh-100">
 <div class="container py-5">
   <div class="row justify-content-center mt-3 mb-3">
     <div class="col-auto">
@@ -71,8 +72,10 @@
   <div class="row">
     <div class="col">
       <a href="{% url 'core:shop' %}" class="btn btn-dark rounded-pill px-4 py-2">Shop</a>
+      <a href="{% url 'core:home' %}" class="btn btn-dark rounded-pill px-4 py-2">Back To Home</a>
     </div>
   </div>
 </div>
+</section>
 <!-- end products -->
 {% endblock content %}
