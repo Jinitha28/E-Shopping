@@ -1,21 +1,15 @@
 from django import forms
-from core import models as core_models
-from django.contrib.auth import get_user_model
-from django.conf import settings
-from django.contrib.auth import forms as auth_forms
 from django.contrib import auth
+from django.contrib.auth import forms as auth_forms
+
+from core import models as core_models
 
 USER = auth.get_user_model()
 
-from core.models import (
-    Address,
-    Cart,
-    CartItem,
-    
-)
+
 class AddressForm(forms.ModelForm):
     class Meta:
-        model = core_models.Address
+        model = core_models.AddressModel
         exclude = (
             "location",
             "status",
@@ -27,7 +21,7 @@ class AddressForm(forms.ModelForm):
 # Profile form
 class ProfileForm(forms.ModelForm):
     class Meta:
-        model = core_models.Profile
+        model = core_models.ProfileModel
         exclude = (
             "status",
             "location",
@@ -38,53 +32,47 @@ class ProfileForm(forms.ModelForm):
             "account_type",
         )
 
-#currency form
-class CurrencyForm(forms.Form):
-    pass
 
-#feedback form
+# feedback form
 class FeedbackForm(forms.ModelForm):
     class Meta:
-        model = core_models.Feedback
+        model = core_models.FeedbackModel
         exclude = ("is_replied", "status", "user")
 
-#cartitem form
+
+# cartitem form
 class CartItemForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CartItemForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, "instance", None)
-        if instance and instance.id:
-            self.fields["product"].widget = forms.HiddenInput(attrs={})
-
     class Meta:
-        model = core_models.CartItem
+        model = core_models.CartItemModel
         fields = ["product", "quantity"]
-
-    def clean_product(self):
-        instance = getattr(self, "instance", None)
-        if instance:
-            return instance.product
-        else:
-            return self.cleaned_data.get("product", None)
 
 
 CartItemFormSet = forms.modelformset_factory(
-    core_models.CartItem, form=CartItemForm, edit_only=True, extra=0, can_delete=True
+    core_models.CartItemModel,
+    form=CartItemForm,
+    edit_only=True,
+    extra=0,
+    can_delete=True,
 )
 
 AddressFormSet = forms.modelformset_factory(
-    core_models.Address, form=AddressForm, edit_only=True, extra=1, can_delete=False
+    core_models.AddressModel,
+    form=AddressForm,
+    edit_only=True,
+    extra=1,
+    can_delete=False,
 )
 
 
-#Billing form
+# Billing form
 class BillingAddressForm(AddressForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = "Billing Address"
         self.prefix = "billing"
 
-#shipping form
+
+# shipping form
 class ShippingAddressForm(AddressForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -92,13 +80,14 @@ class ShippingAddressForm(AddressForm):
         self.prefix = "shipping"
 
 
-#wishlistform
+# wishlistform
 class WishlistForm(forms.ModelForm):
     class Meta:
         model = core_models.WishlistModel
         fields = ["name", "description"]
 
-#Add to cart form
+
+# Add to cart form
 class AddToWishlistForm(forms.ModelForm):
     class Meta:
         model = core_models.WishlistModel
@@ -106,7 +95,11 @@ class AddToWishlistForm(forms.ModelForm):
 
 
 AddToWishlistFormSet = forms.modelformset_factory(
-    core_models.WishlistModel, form=AddToWishlistForm, edit_only=True, extra=0, can_delete=True
+    core_models.WishlistModel,
+    form=AddToWishlistForm,
+    edit_only=True,
+    extra=0,
+    can_delete=True,
 )
 
 # registration form
@@ -116,11 +109,15 @@ class UserRegistrationForm(auth_forms.UserCreationForm):
         fields = ["username", "email"]
 
 
+# Product create form
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = core_models.ProductModel
+        exclude = ("status", "user")
+
+
 # Product Review form
 class ProductReviewForm(forms.ModelForm):
     class Meta:
         model = core_models.ReviewModel
         fields = ["rating", "comment"]
-
-
-

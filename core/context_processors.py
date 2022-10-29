@@ -1,11 +1,11 @@
-from core.models import Cart
+from core.models import CartModel
 
 
 def common_data(request):
     cart = None
     user = request.user
     if user.is_authenticated:
-        cart = Cart.get_cart(request)
+        cart = CartModel.get_cart(request)
     context = {
         "cart": cart,
     }

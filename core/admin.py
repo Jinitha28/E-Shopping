@@ -1,23 +1,22 @@
 from django.contrib import admin
 
-
 from core import models
+
 admin.site.register(models.User)
+admin.site.register(models.LocationModel)
+admin.site.register(models.AddressModel)
+admin.site.register(models.ProfileModel)
+
+admin.site.register(models.FeedbackModel)
+admin.site.register(models.FeedbackReplyModel)
+
 admin.site.register(models.UnitModel)
 admin.site.register(models.CategoryModel)
 admin.site.register(models.ProductModel)
-admin.site.register(models.Cart)
-admin.site.register(models.CartItem)
-admin.site.register(models.Location)
-admin.site.register(models.Address)
-admin.site.register(models.Order)
 admin.site.register(models.WishlistModel)
 admin.site.register(models.ReviewModel)
-admin.site.register(models.Profile)
-admin.site.register(models.Feedback)
-admin.site.register(models.FeedbackReply)
-admin.site.register(models.Payment)
 
-
-
-
+admin.site.register(models.CartModel)
+admin.site.register(models.CartItemModel)
+admin.site.register(models.OrderModel)
+admin.site.register(models.PaymentModel)

@@ -8,12 +8,16 @@ urlpatterns = [
     #comman
     path("", views.HomeView.as_view(), name="home"),
     path("about/", views.AboutView.as_view(), name="about"),
-    path("contact/", views.ContactView.as_view(), name="contact"),
+    path("feedback/create/", views.FeedbackCreateView.as_view(), name="feedback_create"),
     path("shop/", views.ShopView.as_view(), name="shop"),
 
 
     # User
-    path("user/profile/", views.ProfileView.as_view(), name="profile"),
+    path("user/profile/create/", views.ProfileCreateView.as_view(), name="profile_create"),
+    path("user/profile/<int:pk>/detail/", views.ProfileDetailView.as_view(), name="profile_detail"),
+    path("user/profile/<int:pk>/update/", views.ProfileUpdateView.as_view(), name="profile_update"),
+    path("user/profile/<int:pk>/address/create/", views.AddressCreateView.as_view(), name="address_create"),
+    path("user/address/create/", views.AddressCreateView.as_view(), name="address_create"),
     path("user/dashboard/", views.DashboardView.as_view(), name="dashboard"),
 
 
@@ -24,8 +28,9 @@ urlpatterns = [
 
 
     #product
-    path("product/list", views.ProductListView.as_view(), name="product_list"),
-    path("product/<int:pk>/detail", views.ProductDetailView.as_view(), name="product_detail"),
+    path("product/create/", views.ProductCreateView.as_view(), name="product_create"),
+    path("product/list/", views.ProductListView.as_view(), name="product_list"),
+    path("product/<int:pk>/detail/", views.ProductDetailView.as_view(), name="product_detail"),
     path("product/category", views.CategoryListView.as_view(), name="category_list"),
     path("product/category/<int:pk>/product/", views.ProductListByCategory.as_view(), name="product_by_category"),
     path("product/<int:pk>/review/", views.ProductReviewAddView.as_view(), name="add_product_review"),

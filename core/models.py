@@ -1,21 +1,23 @@
-from django.db import models
 from django.conf import settings
-from django.urls import reverse
-from django.db.models import F, Q, Sum
-from core import models as core_models
+from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.contrib import auth
+from django.db import models
+from django.db.models import F, Q, Sum
+from django.urls import reverse
+
+from core import models as core_models
+
 
 class User(AbstractUser):
-    pass
+    def has_profile(self):
+        profile = getattr(self, "profilemodel", None)
+        return profile
 
 
 USER = settings.AUTH_USER_MODEL
 
-
-USER = auth.get_user_model()
-
+# Abstract models
 class TimeStamp(models.Model):
     status = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -24,34 +26,18 @@ class TimeStamp(models.Model):
     class Meta:
         abstract = True
 
-#unit model
-class UnitModel(core_models.TimeStamp, models.Model):
-    name = models.CharField(max_length=16)
-    symbol = models.CharField(max_length=16)
-    convertion_rate = models.FloatField()
-    secondary = models.ForeignKey(
-        "self", on_delete=models.SET_NULL, null=True, blank=True
-    )
-    user = models.ForeignKey(USER, on_delete=models.CASCADE)
 
-    def __str__(self) -> str:
-        return f"{self.name}"
-
-    def get_absolute_url(self):
-        return reverse("product:unit_detail", kwargs={"pk": self.pk})
-
-
-#location model
-class Location(TimeStamp, models.Model):
+# location model
+class LocationModel(TimeStamp, models.Model):
     longitude = models.FloatField()
     lattitude = models.FloatField()
 
     def __str__(self):
         return f"{self.longitude},{self.lattitude}"
-        
 
-#address model
-class Address(TimeStamp, models.Model):
+
+# address model
+class AddressModel(TimeStamp, models.Model):
     building_name = models.CharField(max_length=120)
     place = models.CharField(max_length=64)
     street = models.CharField(max_length=64)
@@ -62,20 +48,18 @@ class Address(TimeStamp, models.Model):
     post_office = models.CharField(max_length=64)
     post_code = models.CharField(max_length=64)
     location = models.ForeignKey(
-        "Location", on_delete=models.SET_NULL, null=True, blank=True
+        "LocationModel", on_delete=models.SET_NULL, null=True, blank=True
     )
 
     def __str__(self):
         return f"{self.building_name}\n{self.place}\n{self.district}\n{self.state} - {self.post_code}"
 
-    @staticmethod
-    def get_obj_for_profile(request, **kwargs):
-        user = request.user
-        obj = Address.objects.filter(profile__user=user, status=True, **kwargs).first()
-        return obj
+    def get_absolute_url(self):
+        return reverse("core:address_detail", kwargs={"pk": self.pk})
 
-#contact model     
-class Feedback(TimeStamp, models.Model):
+
+# contact model
+class FeedbackModel(TimeStamp, models.Model):
     name = models.CharField(max_length=60)
     email = models.EmailField(max_length=60)
     subject = models.CharField(max_length=120, default="I want to know more.")
@@ -86,8 +70,8 @@ class Feedback(TimeStamp, models.Model):
         return f"{self.name}"
 
 
-class FeedbackReply(TimeStamp, models.Model):
-    feedback = models.OneToOneField(Feedback, on_delete=models.CASCADE)
+class FeedbackReplyModel(TimeStamp, models.Model):
+    feedback = models.OneToOneField("FeedbackModel", on_delete=models.CASCADE)
     reply = models.TextField(max_length=500)
     user = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -95,8 +79,8 @@ class FeedbackReply(TimeStamp, models.Model):
         return f"{self.feedback.subject}"
 
 
-#profile model
-class Profile(TimeStamp, models.Model):
+# profile model
+class ProfileModel(TimeStamp, models.Model):
     class GenderChoices:
         male = "m"
         female = "f"
@@ -105,24 +89,24 @@ class Profile(TimeStamp, models.Model):
     class AccountTypeChoices:
         customer = "customer"
         administrator = "admin"
+        merchant = "merchant"
 
     GENDER_CHOICES = (
-        (GenderChoices.male, "Male"),
-        (GenderChoices.female, "Female"),
-        (GenderChoices.transgender, "Transgender"),
+        ("Male", GenderChoices.male),
+        ("Female", GenderChoices.female),
+        ("Transgender", GenderChoices.transgender),
     )
 
     ACCOUNT_TYPE_CHOICES = (
         ("Customer", AccountTypeChoices.customer),
+        ("Merchant", AccountTypeChoices.merchant),
         ("Administrator", AccountTypeChoices.administrator),
     )
 
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
     gender = models.CharField(max_length=12, choices=GENDER_CHOICES)
-    address = models.ForeignKey(
-        Address, on_delete=models.SET_NULL, null=True, blank=True
-    )
+    addresses = models.ManyToManyField("AddressModel")
     image = models.ImageField(
         upload_to="user/profile/image", default="default/user.png"
     )
@@ -138,18 +122,34 @@ class Profile(TimeStamp, models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    @staticmethod
-    def get_obj(request, **kwargs):
-        user = request.user
-        obj = Profile.objects.filter(user=user, status=True, **kwargs).first()
-        return obj
-    
+    def get_absolute_url(self):
+        return reverse("core:profile_detail", kwargs={"pk": self.pk})
 
-#category model
+
+# Shoppint models ================================================
+
+# unit model
+class UnitModel(core_models.TimeStamp, models.Model):
+    name = models.CharField(max_length=16)
+    symbol = models.CharField(max_length=16)
+    convertion_rate = models.FloatField()
+    secondary = models.ForeignKey(
+        "self", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    user = models.ForeignKey(USER, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse("core:unit_detail", kwargs={"pk": self.pk})
+
+
+# category model
 class CategoryModel(core_models.TimeStamp, models.Model):
     name = models.CharField(max_length=48)
     image = models.ImageField(
-        upload_to="category/image/", default="default/product.png"
+        upload_to="category/image/", default="default/category.png"
     )
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(USER, on_delete=models.CASCADE)
@@ -158,19 +158,15 @@ class CategoryModel(core_models.TimeStamp, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("product:product_detail", kwargs={"pk": self.pk})
+        return reverse("core:category_detail", kwargs={"pk": self.pk})
 
 
-
-
-#product model
+# product model
 class ProductModel(core_models.TimeStamp, models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField(max_length=500)
     price = models.FloatField()
-    image = models.ImageField(
-        upload_to="category/image/", default="default/category_electro.jpg"
-    )
+    image = models.ImageField(upload_to="product/image/", default="default/product.png")
     category = models.ForeignKey(
         "CategoryModel", on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -184,12 +180,11 @@ class ProductModel(core_models.TimeStamp, models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("product:product_detail", kwargs={"pk": self.pk})
+        return reverse("core:product_detail", kwargs={"pk": self.pk})
 
 
-
- #cart model
-class Cart(core_models.TimeStamp, models.Model):
+# cart model
+class CartModel(core_models.TimeStamp, models.Model):
     user = models.ForeignKey(USER, on_delete=models.CASCADE)
     empty = models.BooleanField(default=True)
     checked_out = models.BooleanField(default=False)
@@ -197,10 +192,13 @@ class Cart(core_models.TimeStamp, models.Model):
     def __str__(self):
         return f"{self.user}"
 
+    def get_absolute_url(self):
+        return reverse("core:cart_detail", kwargs={"pk": self.pk})
+
     def total(self):
         price = (
             (
-                CartItem.objects.filter(cart=self, status=True).annotate(
+                CartItemModel.objects.filter(cart=self, status=True).annotate(
                     item_price=F("quantity") * F("product__price")
                 )
             )
@@ -211,13 +209,13 @@ class Cart(core_models.TimeStamp, models.Model):
         return price
 
     def items(self):
-        cart_items = CartItem.objects.filter(cart__user=self.user, status=True)
+        cart_items = CartItemModel.objects.filter(cart__user=self.user, status=True)
         return cart_items
 
     @staticmethod
     def get_cart(request, **kwargs):
         user = request.user
-        cart, created = Cart.objects.get_or_create(
+        cart, created = CartModel.objects.get_or_create(
             user=user,
             status=True,
             checked_out=False,
@@ -225,40 +223,40 @@ class Cart(core_models.TimeStamp, models.Model):
         )
         return cart
 
-#cartitem model
-class CartItem(core_models.TimeStamp, models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+
+# cartitem model
+class CartItemModel(core_models.TimeStamp, models.Model):
+    cart = models.ForeignKey("CartModel", on_delete=models.CASCADE)
+    product = models.ForeignKey("ProductModel", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.product} ({self.quantity})"
 
+    def get_absolute_url(self):
+        return reverse("core:cart_item_detail", kwargs={"pk": self.pk})
+
     def total(self):
         cost = self.product.price * self.quantity
         return cost
 
-    def __iter__(self):
-        return self.__next__()
 
-    def __next__(self):
-        yield (self.product, self.quantity)
-
-
-#wishlist model
+# wishlist model
 class WishlistModel(TimeStamp, models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField(max_length=500, blank=True, default="")
-    products = models.ManyToManyField(ProductModel, blank=True)
+    products = models.ManyToManyField("ProductModel", blank=True)
     user = models.ForeignKey(USER, on_delete=models.CASCADE, blank=True)
 
     def __str__(self) -> str:
         return self.name
+
     def get_absolute_url(self):
-        return reverse("core:wishlist_list")
+        return reverse("core:wishlist_detail", kwargs={"pk": self.pk})
+
 
 class ReviewModel(TimeStamp, models.Model):
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+    product = models.ForeignKey("ProductModel", on_delete=models.CASCADE)
     rating = models.FloatField()
     comment = models.TextField(max_length=250)
     user = models.ForeignKey(USER, on_delete=models.CASCADE)
@@ -267,11 +265,11 @@ class ReviewModel(TimeStamp, models.Model):
         return f"{self.user} ({self.rating})"
 
     def get_absolute_url(self):
-        return reverse("product:review_detail", kwargs={"pk": self.pk})
+        return reverse("core:product_review_detail", kwargs={"pk": self.pk})
 
 
-#order model
-class Order(TimeStamp, models.Model):
+# order model
+class OrderModel(TimeStamp, models.Model):
     class CurrencyChoices:
         INR = "INR"
         DOLLAR = "D"
@@ -282,7 +280,7 @@ class Order(TimeStamp, models.Model):
     )
 
     id = models.CharField(primary_key=True, unique=True, max_length=120)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey("CartModel", on_delete=models.CASCADE)
     amount = models.FloatField()
     currency = models.CharField(
         max_length=24,
@@ -292,14 +290,14 @@ class Order(TimeStamp, models.Model):
     delivery_charge = models.FloatField(default=0)
     completed = models.BooleanField(default=False)
     billing_address = models.ForeignKey(
-        Address,
+        "AddressModel",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="checkout_billing_address",
     )
     shipping_address = models.ForeignKey(
-        Address,
+        "AddressModel",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -309,14 +307,17 @@ class Order(TimeStamp, models.Model):
     def __str__(self) -> str:
         return f"{self.id or self.cart} {'Completed' if self.completed else 'Not Completed'}"
 
+    def get_absolute_url(self):
+        return reverse("core:order_detail", kwargs={"pk": self.pk})
+
     def total(self):
         cart_total = self.cart.total
         cost = cart_total + self.delivery_charge
         return cost
 
 
-#payment model
-class Payment(TimeStamp, models.Model):
+# payment model
+class PaymentModel(TimeStamp, models.Model):
     class PaymentStatusChoices:
         pending = "pending"
         completed = "completed"
@@ -329,7 +330,9 @@ class Payment(TimeStamp, models.Model):
     )
 
     id = models.CharField(primary_key=True, unique=True, max_length=120)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
+    order = models.ForeignKey(
+        "OrderModel", on_delete=models.SET_NULL, null=True, blank=True
+    )
     status = models.CharField(
         max_length=16,
         choices=PAYMENT_STATUS_CHOICES,
@@ -339,3 +342,6 @@ class Payment(TimeStamp, models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.status}"
+
+    def get_absolute_url(self):
+        return reverse("core:payment_detail", kwargs={"pk": self.pk})
