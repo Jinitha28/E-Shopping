@@ -175,9 +175,13 @@ class RegistrationView(views.CreateView):
 class LoginView(auth_views.LoginView):
     template_name = "registration/login.html"
     redirect_authenticated_user = True
-    enable_recaptcha = False
+    enable_recaptcha = True
+    extra_context = {
+        "reCAPTCHA_site_key" : settings.GOOGLE_RECAPTCHA_SITE_KEY
+    }
 
     def form_valid(self, form):
+        print("GOOGLE_RECAPTCHA_:=========", settings.GOOGLE_RECAPTCHA_SITE_KEY)
         verified = True
         if self.enable_recaptcha:
             g_recaptcha_response = self.request.POST.get("g-recaptcha-response")
@@ -193,6 +197,7 @@ class LoginView(auth_views.LoginView):
         if verified:
             return super().form_valid(form)
         return super().form_invalid(form)
+
 
 
 # logout view

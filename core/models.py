@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import F, Q, Sum
 from django.urls import reverse
-
 from core import models as core_models
 
 
@@ -110,6 +109,7 @@ class ProfileModel(TimeStamp, models.Model):
     image = models.ImageField(
         upload_to="user/profile/image", default="default/user.png"
     )
+
     account_type = models.CharField(
         max_length=16,
         choices=ACCOUNT_TYPE_CHOICES,
