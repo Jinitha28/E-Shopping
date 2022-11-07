@@ -124,9 +124,12 @@ class ProfileModel(TimeStamp, models.Model):
 
     def get_absolute_url(self):
         return reverse("core:profile_detail", kwargs={"pk": self.pk})
+    
+
+    
 
 
-# Shoppint models ================================================
+# Shopping models ================================================
 
 # unit model
 class UnitModel(core_models.TimeStamp, models.Model):

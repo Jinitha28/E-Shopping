@@ -309,11 +309,11 @@ class CartView(views.TemplateView):
 
     def form_valid(self, form):
 
-        currency_form = self.currency_form(self.request.POST)
-        if currency_form.is_valid():
-            currency = currency_form.cleaned_data.get("currency")
+        #currency_form = self.currency_form(self.request.POST)
+        #if currency_form.is_valid():
+            #currency = currency_form.cleaned_data.get("currency")
 
-        self.request.session["currency"] = currency or None
+        #self.request.session["currency"] = currency or None
 
         form.save()
 
@@ -364,7 +364,10 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
 
     def get(self, request):
         address = None
-        address = request.user.profilemodel.addresses.first() or None
+        #address = request.user.profilemodel.addresses.first() or None
+        if hasattr(request.user, "profile"):
+            address = request.user.profile.address or None
+        
 
         context = {
             "billing_form": self.billing_address_form(instance=address),
