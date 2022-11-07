@@ -47,10 +47,10 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    # "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.facebook",
     "allauth.socialaccount.providers.google",
     # "allauth.socialaccount.providers.twitter",
-    # "allauth.socialaccount.providers.github",
+    #"allauth.socialaccount.providers.github",
     # Local apps
     "core",
 ]
@@ -213,5 +213,24 @@ SOCIALACCOUNT_PROVIDERS = {
         "AUTH_PARAMS": {
             "access_type": "online",
         },
-    }
+    },
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+    },
+
+    'facebook':
+            { 'SCOPE': ['email', 'publish_stream'],
+              'AUTH_PARAMS': { 'auth_type': 'reauthenticate' },
+              'METHOD': 'oauth2' ,
+              'LOCALE_FUNC': 'path.to.callable'}
+
+
 }
+
+
+
+

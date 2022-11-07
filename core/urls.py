@@ -60,6 +60,7 @@ urlpatterns = [
 
   # Payment
     path("payment/", views.PaymentListView.as_view(), name="payment_list"),
+    path("payment/response/", views.payment_handler, name="payment_handler"),
 
 
 ]

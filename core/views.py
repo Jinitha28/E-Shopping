@@ -175,7 +175,7 @@ class RegistrationView(views.CreateView):
 class LoginView(auth_views.LoginView):
     template_name = "registration/login.html"
     redirect_authenticated_user = True
-    enable_recaptcha = True
+    enable_recaptcha = False
     extra_context = {
         "reCAPTCHA_site_key" : settings.GOOGLE_RECAPTCHA_SITE_KEY
     }
@@ -427,6 +427,9 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
             "shipping_form": shipping_form,
         }
         return render(self.request, self.template_name, context)
+    
+def payment_handler(request,*args,**kwargs):
+        return render(request,"shop/order_history.html")
 
 
 # order view

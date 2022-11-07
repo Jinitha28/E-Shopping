@@ -30,8 +30,12 @@
                 </tr>
               </thead>
               <tbody>
-                {{ form.management_form }} {% for item in form %} {{item.id}}
-                {{item.product}}
+                {{ form.management_form }} 
+                {% for item in form %} 
+                {{item.id}}
+                <div class="d-none">
+                  {{item.product}}
+                </div>
                 <tr>
                   <td>{{item.DELETE}}</td>
                   <td>
@@ -78,7 +82,11 @@
               >
                 Update Cart
               </button>
-              <a href="{% url 'core:checkout' %}" class="btn btn-dark rounded-5 px-4 py-3">Check Out</a>
+              <a
+                href="{% url 'core:checkout' %}"
+                class="btn btn-dark rounded-5 px-4 py-3"
+                >Check Out</a
+              >
             </div>
           </form>
         </div>
