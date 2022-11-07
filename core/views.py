@@ -429,7 +429,7 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
         return render(self.request, self.template_name, context)
     
 def payment_handler(request,*args,**kwargs):
-        return render(request,"shop/order_history.html")
+        return render(request,"core/pay.html")
 
 
 # order view
@@ -611,6 +611,72 @@ class ProductReviewAddView(auth_mixins.LoginRequiredMixin, views.View):
 
     def form_invalid(self, form):
         return render(self.request, self.template_name, {"form": form})
+
+
+    # Payment view
+class PaymentView(auth_mixins.LoginRequiredMixin, views.View):
+    template_name = "core/pay.html"
+
+    def get(self, request):
+        cart = core_models.CartModel.get_cart(self.request)
+        order = core_models.OrderModel.objects.filter(
+            cart=cart,
+            completed=False,
+        ).last()
+        context = {
+            "razorpay_order_id": order.id,
+            "razorpay_merchant_key": settings.RAZORPAY_KEY_ID,
+            "razorpay_amount": order.amount,
+            "razorpay_currency": order.currency,
+            "razorpay_callback_url": reverse_lazy("core:payment_handler"),
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        try:
+            # get the required parameters from post request.
+            payment_id = request.POST.get("razorpay_payment_id", "")
+            razorpay_order_id = request.POST.get("razorpay_order_id", "")
+            signature = request.POST.get("razorpay_signature", "")
+            params_dict = {
+                "razorpay_order_id": razorpay_order_id,
+                "razorpay_payment_id": payment_id,
+                "razorpay_signature": signature,
+            }
+
+            order = core_models.OrderModel.objects.filter(id=razorpay_order_id).last()
+
+            # verify the payment signature.
+            result = RAZORPAY_CLIENT.utility.verify_payment_signature(params_dict)
+            if result is not None:
+                amount = order.amount
+                try:
+
+                    # capture the payemt
+                    RAZORPAY_CLIENT.payment.capture(payment_id, amount)
+
+                    core_models.PaymentModel.objects.create(
+                        id=payment_id,
+                        order=order,
+                        status=core_models.PaymentModel.PaymentStatusChoices.completed,
+                        mode="",
+                    )
+
+                    # render success page on successful caputre of payment
+                    return render(request, "core/paymentsuccess.html")
+                except:
+
+                    # if there is an error while capturing payment.
+                    return render(request, "core/paymentfail.html")
+            else:
+
+                # if signature verification fails.
+                return render(request, "core/paymentfail.html")
+        except:
+
+            # if we don't find the required parameters in POST data
+            return redirect(reverse_lazy("core:payment_handler"))
+
 
 
 # Payment List view

@@ -59,7 +59,8 @@ urlpatterns = [
     path("order/<str:pk>/", views.OrderDetailView.as_view(), name="order_detail"),
 
   # Payment
-    path("payment/", views.PaymentListView.as_view(), name="payment_list"),
+    path("payment/", views.PaymentView.as_view(), name="payment"),
+    path("paymentlist/", views.PaymentListView.as_view(), name="payment_list"),
     path("payment/response/", views.payment_handler, name="payment_handler"),
 
 
