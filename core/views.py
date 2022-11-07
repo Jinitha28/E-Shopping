@@ -293,7 +293,7 @@ class CartView(views.TemplateView):
         form = self.form_class(queryset=cart_items)
         context = {
             "form": form,
-            # "currency_form": self.currency_form(),
+             #"currency_form": self.currency_form(),
         }
         return render(request, self.template_name, context)
 
@@ -309,11 +309,11 @@ class CartView(views.TemplateView):
 
     def form_valid(self, form):
 
-        # currency_form = self.currency_form(self.request.POST)
-        # if currency_form.is_valid():
-        # currency = currency_form.cleaned_data.get("currency")
+        currency_form = self.currency_form(self.request.POST)
+        if currency_form.is_valid():
+            currency = currency_form.cleaned_data.get("currency")
 
-        # self.request.session["currency"] = currency or None
+        self.request.session["currency"] = currency or None
 
         form.save()
 
@@ -419,7 +419,7 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
             shipping_address=shipping_address,
         )
 
-        return redirect(reverse_lazy("core:payment_handler"))
+        return redirect(reverse_lazy("core:payment"))
 
     def form_invalid(self, billing_form, shipping_form):
         context = {
