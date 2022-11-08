@@ -402,7 +402,8 @@ class CheckoutView(auth_mixins.LoginRequiredMixin, views.View):
         billing_address = billing_form.save()
         shipping_address = shipping_form.save()
         delivery_charge = self.get_delivery_charge(shipping_address)
-        amount = self.apply_other_charges(cart.total() + delivery_charge) * 100
+        amount = self.apply_other_charges(cart.total() + delivery_charge) 
+        
 
         # create order
         data = {
