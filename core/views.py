@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic as views
+from django.http import HttpResponse
 
 from core import forms as core_forms
 from core import models as core_models

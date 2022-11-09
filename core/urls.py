@@ -17,7 +17,7 @@ urlpatterns = [
     path("user/profile/<int:pk>/detail/", views.ProfileDetailView.as_view(), name="profile_detail"),
     path("user/profile/<int:pk>/update/", views.ProfileUpdateView.as_view(), name="profile_update"),
     path("user/profile/<int:pk>/address/create/", views.AddressCreateView.as_view(), name="address_create"),
-    path("user/address/create/", views.AddressCreateView.as_view(), name="address_create"),
+    #path("user/address/create/", views.AddressCreateView.as_view(), name="address_create"),
     path("user/dashboard/", views.DashboardView.as_view(), name="dashboard"),
 
 
