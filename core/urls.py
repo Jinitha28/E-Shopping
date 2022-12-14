@@ -65,11 +65,6 @@ urlpatterns = [
     path("payment/response/", views.payment_handler, name="payment_handler"),
 
 
-<<<<<<< HEAD
     path("search/",core_views.search_product, name="search"),
 
-
-
-=======
->>>>>>> refs/remotes/origin/main
 ]
