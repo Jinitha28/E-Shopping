@@ -1,0 +1,124 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- cart -->
+<section class="vh-100">
+<div class="cart-section">
+  <div class="container py-5">
+    <div class="row justify-content-center mt-3 mb-3">
+      <div class="col-auto">
+        <div class="heading-1">
+          <h1 class="text-center">Cart</h1>
+          <div class="hl"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-12">
+        <div class="cart-table-wrap">
+          <form method="post">
+            {% csrf_token %}
+            <table class="table table-bordered align-middle mb-3">
+              <thead>
+                <tr>
+                  <th>
+                    <i class="fa-solid fa-trash"></i>
+                  </th>
+                  <th>Product Image</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{ form.management_form }} 
+                {% for item in form %} 
+                {{item.id}}
+                <div class="d-none">
+                  {{item.product}}
+                </div>
+                <tr>
+                  <td>{{item.DELETE}}</td>
+                  <td>
+                    <div class="card" style="width: 75px; height: 75px">
+                      <img
+                        src="{{item.instance.product.image.url}}"
+                        class="card-img"
+                        alt=""
+                      />
+                    </div>
+                  </td>
+                  <td>{{item.instance.product.name}}</td>
+                  <td>INR {{item.instance.product.price}}</td>
+                  <td class="p-3">{{item.quantity}}</td>
+                  <td>INR {{item.instance.total}}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td class="text-center" colspan="6">Your cart is empty!</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <!--<div class="mb-3">
+              <label for="id_currency" class="form-label">Currency</label>
+              {{currency_form}}
+            </div>-->
+            <div class="coupon-section mt-0 mb-3">
+              <!--<h3>Apply Coupon</h3>-->
+              <div class="coupon-form-wrap">
+                <p>
+                  <!--<input
+                    type="text"
+                    class="form-control"
+                    placeholder="Coupon"
+                  />-->
+                </p>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                type="submit"
+                class="btn btn-dark rounded-5 px-4 py-3 me-3 text-lower"
+              >
+                Update Cart
+              </button>
+              <a
+                href="{% url 'core:checkout' %}"
+                class="btn btn-dark rounded-5 px-4 py-3"
+                >Check Out</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="total-section">
+          <table class="total-table mb-3">
+            <thead class="total-table-head">
+              <tr class="table-total-row">
+                <th>Total</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="total-data">
+                <td><strong>Subtotal: </strong></td>
+                <td>INR {{cart.total}}</td>
+              </tr>
+
+              <tr class="total-data">
+                <td><strong>Total: </strong></td>
+                <td>INR {{ cart.total|add:"45" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- end cart -->
+{% endblock content %}

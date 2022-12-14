@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="row justify-content-center mt-3 mb-3">
+  <div class="col-auto">
+    <div class="heading-1">
+      <h2 class="text-center">Contact Us</h2>
+      <div class="hl"></div>
+    </div>
+  </div>
+</div>
+<div class="row align-items-lg-center mb-5">
+  <div class="col-lg-6">
+    <div class="card">
+      <img src="{% static 'img/cont_bck.jpg' %}" class="card-img" alt="" />
+      </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %} 
+          {{form.as_p}}
+          <button class="btn btn-dark rounded-5 px-4 py-3">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- contact us end -->
+
+{% endblock content %}
