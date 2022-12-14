@@ -50,7 +50,11 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.facebook",
     #"allauth.socialaccount.providers.twitter",
+<<<<<<< HEAD
     "allauth.socialaccount.providers.github",
+=======
+    #"allauth.socialaccount.providers.github",
+>>>>>>> refs/remotes/origin/main
     # Local apps
     "core",
 ]
