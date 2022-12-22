@@ -123,12 +123,8 @@
             {{user}}
           </a>
           <ul class="dropdown-menu">
-<<<<<<< HEAD
-            {% if user.has_profile %}
-=======
             
             {% if  user.has_profile %}
->>>>>>> refs/remotes/origin/main
             <li>
               <a
                 class="dropdown-item"
@@ -179,33 +175,12 @@
         {% endif %}
 
         <li class="nav-item ms-lg-auto">
-<<<<<<< HEAD
-          <form action="{% url 'core:shop' %}" class="d-flex" role="search">
+          {% csrf_token %}
+          <form class="d-flex" role="search" action="#">
             <input
               class="form-control me-2"
               type="search"
-              name="name"
-              placeholder="Search for products"
-            />
-            <button class="btn btn-outline-light" type="submit">
-              <i class="fa-solid fa-search"></i>
-            </button>
-          </form>
-
-          {% for result in results %}
-
-          <p>{{result.name}}</p>
-
-          {% endfor %}
-        </li>
-
-        <!--<li class="nav-item ms-lg-auto">
-=======
->>>>>>> refs/remotes/origin/main
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
+              name="q"
               placeholder="Search for products"
               aria-label="Search"
             />
@@ -213,11 +188,7 @@
               <i class="fa-solid fa-search"></i>
             </button>
           </form>
-<<<<<<< HEAD
-        </li>-->
-=======
         </li>
->>>>>>> refs/remotes/origin/main
       </ul>
     </div>
   </div>
