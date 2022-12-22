@@ -106,10 +106,6 @@ class ProfileModel(TimeStamp, models.Model):
     last_name = models.CharField(max_length=32)
     gender = models.CharField(max_length=12, choices=GENDER_CHOICES)
     addresses = models.ManyToManyField("AddressModel")
-<<<<<<< HEAD
-    
-=======
->>>>>>> refs/remotes/origin/main
     image = models.ImageField(
         upload_to="user/profile/image", default="default/user.png"
     )
