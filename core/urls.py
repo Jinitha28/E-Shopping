@@ -36,6 +36,9 @@ urlpatterns = [
     path("product/category/<int:pk>/product/", views.ProductListByCategory.as_view(), name="product_by_category"),
     path("product/<int:pk>/review/", views.ProductReviewAddView.as_view(), name="add_product_review"),
 
+    #product search
+    path("product/search/", core_views.SearchView.as_view(), name= "product_search"),
+
     # Wishlist
     path("wishlist/", views.WishlistListView.as_view(), name="wishlist_list"),
     path("wishlist/create/", views.WishlistCreateView.as_view(), name="wishlist_create"),
@@ -65,6 +68,6 @@ urlpatterns = [
     path("payment/response/", views.payment_handler, name="payment_handler"),
 
 
-    path("search/",core_views.search_product, name="search"),
+    
 
 ]

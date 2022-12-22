@@ -696,14 +696,14 @@ class PaymentListView(auth_mixins.LoginRequiredMixin, views.ListView):
         qs = qs.filter(order__cart__user=user)
         return qs
 
-#serch button
-def search_product(request):
-    """ search function  """
-    if request.method == "POST":
-        query_name = request.POST.get('name', None)
-        if query_name:
-            results = core_models.ProductModel.objects.filter(name__contains=query_name)
-            return render(request, 'shop.html', {"results":results})
+#Product searchView
+class SearchView(views.ListView):
+    template_name = "shop/product_list.html"
+    model = core_models.ProductModel
+    context_object_name = "products"
 
-    return render(request, 'shop.html')
-
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get("q")
+        qs = qs.filter(name__icontains=q)
+        return qs

@@ -176,7 +176,7 @@
 
         <li class="nav-item ms-lg-auto">
           {% csrf_token %}
-          <form class="d-flex" role="search" action="#">
+          <form class="d-flex" role="search" action="{% url 'core:product_search' %}">
             <input
               class="form-control me-2"
               type="search"
