@@ -39,6 +39,7 @@ urlpatterns = [
     #product search
     path("product/search/", core_views.SearchView.as_view(), name= "product_search"),
 
+
     # Wishlist
     path("wishlist/", views.WishlistListView.as_view(), name="wishlist_list"),
     path("wishlist/create/", views.WishlistCreateView.as_view(), name="wishlist_create"),
